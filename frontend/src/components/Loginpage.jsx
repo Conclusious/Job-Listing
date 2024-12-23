@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation , useNavigate } from 'react-router-dom';
 
 function Login() {
+  const navigate = useNavigate();
   const [currentForm, setCurrentForm] = useState('login');
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [password, setPassword] = useState('');
   const location = useLocation();
 
   useEffect(() => {
@@ -12,10 +18,72 @@ function Login() {
       setCurrentForm('login');
     }
   }, [location.hash]);
-  
+
   const toggleForm = (form) => {
     setCurrentForm(form);
   };
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          firstname,
+          lastname,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log('Response Status:', response.status);
+    console.log('Response Data:', data);
+    if (response.ok) {
+      alert('Registration successful!');
+      navigate('/');
+    } else {
+      alert(`Error: ${data.message || 'Unknown error occurred'}`);
+    }
+  } catch (error) {
+    console.log('Error:', error);
+    alert('An error occurred. Please try again later.');
+  }
+  
+  };
+  const handleLoginSubmit = async (e)=>{
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: email, 
+          password,
+        }),
+      });
+  
+      const data = await response.json();
+      console.log('Response Status:', response.status);
+      console.log('Response Data:', data);
+      if (response.ok) {
+        alert('Login successful!');
+        navigate('/');
+      } else {
+        alert(`Error: ${data.message || 'Invalid username or password'}`);
+      }
+        } catch (error) {
+          console.log('Error:', error);
+          alert('An error occurred. Please try again later.');
+      }
+   };
   
   return (
     <div className="bg-[#023E53] flex justify-center items-center min-h-screen">
@@ -69,13 +137,15 @@ function Login() {
 
           {/* Forms */}
           {currentForm === "login" && (
-            <form className="w-full flex flex-col gap-4">
+            <form className="w-full flex flex-col gap-4" onSubmit={handleLoginSubmit}>
               <input
                 type="text"
                 name="username"
                 id="username"
                 placeholder="Enter Username/Email Address"
                 className="border pl-2 rounded-[10px] w-full h-[50px] "
+                value={email}
+                onChange={(e)=> setEmail(e.target.value)}
                 required
               />
               <input
@@ -84,6 +154,8 @@ function Login() {
                 id="password"
                 placeholder="Enter Password"
                 className="border pl-2 rounded-[10px] w-full h-[50px]"
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 required
               />
               <div className="flex flex-row mb-[10px]">
@@ -147,12 +219,14 @@ function Login() {
             </form>
           )}
           {currentForm === "register" && (
-            <form className="w-full flex flex-col gap-4">
+            <form className="w-full flex flex-col gap-4" onSubmit={handleRegisterSubmit}>
               <input
                 type="email"
                 id="register-email"
                 placeholder="Enter Email Address"
                 className="border p-2 rounded w-full"
+                value={email}
+                onChange={(e)=> setEmail(e.target.value)}
                 required
               />
               <input
@@ -160,6 +234,8 @@ function Login() {
                 id="register-username"
                 placeholder="Enter Username"
                 className="border p-2 rounded w-full"
+                value={username}
+                onChange={(e)=> setUsername(e.target.value)}
                 required
               />
               <input
@@ -167,6 +243,8 @@ function Login() {
                 id="register-firstname"
                 placeholder="Enter First Name"
                 className="border p-2 rounded w-full"
+                value={firstname}
+                onChange={(e)=> setFirstname(e.target.value)}
                 required
               />
               <input
@@ -174,41 +252,18 @@ function Login() {
                 id="register-lastname"
                 placeholder="Enter Last Name"
                 className="border p-2 rounded w-full"
+                value={lastname}
+                onChange={(e)=>setLastname(e.target.value)}
                 required
               />
-              <button
-                type="button"
-                onClick={() => toggleForm("register-next")}
-                className="bg-[#07475D] text-white py-2 rounded w-full"
-              >
-                Next
-              </button>
-            </form>
-          )}
-
-          {currentForm === "register-next" && (
-            <form className="w-full flex flex-col gap-4">
               <input
                 type="password"
                 placeholder="Enter Password"
                 className="border p-2 rounded w-full"
+                value={password}
+                onChange={(e)=> setPassword(e.target.value)}
                 required
               />
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  id="verification-code"
-                  placeholder="Verification Code"
-                  className="border p-2 rounded flex-grow"
-                  required
-                />
-                <button
-                  type="button"
-                  className="bg-blue-500 text-white py-2 px-4 rounded"
-                >
-                  Send
-                </button>
-              </div>
               <button
                 type="submit"
                 className="bg-[#07475D] text-white py-2 rounded w-full"
