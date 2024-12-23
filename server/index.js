@@ -30,7 +30,7 @@ app.post('/login',(req,res)=>{
       return res.status(500).json({ message: 'Server error' });
     }
 
-    if (results.length > 0) {
+    if (result.length > 0) {
       res.status(200).json({ message: 'Login successful', user: result[0] });
     } else {
       res.status(401).json({ message: 'Invalid username/email or password' });
