@@ -1,20 +1,28 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Profile() {
+    const navigate = useNavigate();
+
+    const goToHome = () => {
+      navigate('/');
+    };
+
     return (
         <>
             {/* Header Container */}
-            <div className='flex justify-center items-center bg-[#023E53] h-[100px]'>
-                <h1 className='absolute mr-[1000px] font-merriweather-sans font-bold text-[30px] text-white'>MUYMUY</h1>
+            <div className='flex justify-center items-center bg-white h-[100px]'>
+                <h1 className='absolute mr-[1000px] text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer' onClick={goToHome}>MuYMuY</h1>
                 <div className='flex w-[520px]'>
                     <input
                         placeholder="Search the job title or companies"
-                        className="w-[450px] h-[35px] rounded-l-[5px] indent-2"
+                        className="w-[450px] h-[35px] shadow-inner border-[3px] border-r-0 rounded-l-[5px] indent-2"
                     ></input>
                     <button
                         type="button"
-                        className='place-items-center bg-gray-100 w-[75px] h-[35px] rounded-r-[5px]'
+                        className='place-items-center w-[75px] h-[35px] shadow-inner border-[3px] rounded-r-[5px]'
                     ><img
+                            id='search'
                             className='w-[24px] h-[24px]'
                             src="../../public/images/search-profile.png"
                             alt="Search" />
@@ -23,7 +31,7 @@ function Profile() {
             </div>
 
             {/* Profile Container */}
-            <div className='bg-[#023E53] h-[1000px] border-t-2 border-t-gray-500'>
+            <div className='bg-[#023E53] h-[1000px] border-t-2 border-t-gray-700'>
                 <div className='justify-self-center mt-[50px] pb-5 bg-white h-auto w-[885px] rounded-[5px] rounded-t-[10px]'>
                     <div className='bg-[#4C4343] h-[175px] rounded-t-[5px]'>
                         <img
