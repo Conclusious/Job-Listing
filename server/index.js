@@ -43,6 +43,18 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
+app.post('/jobpost', (req, res) => {
+    const {job_title, workplace, job_type, company, job_location, description}=req.body;
+    const sql = 'INSERT INTO job (job_title, workplace, job_type, company, job_location, description) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [job_title, workplace, job_type, company, job_location, description], (err, result) => {
+      if(err){
+        console.error('Error posting job:', err);
+        return res.status(500).json({message: 'Error posting job'});
+      }
+      res.status(200).json({message: 'Job posted successful', jobID: result.insertId});
+    });
+});
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

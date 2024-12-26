@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation , useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Login() {
   const navigate = useNavigate();
@@ -43,21 +43,21 @@ function Login() {
       const data = await response.json();
 
       console.log('Response Status:', response.status);
-    console.log('Response Data:', data);
-    if (response.ok) {
-      localStorage.setItem('Login', 'true');
-      alert('Registration successful!');
-      navigate('/');
-    } else {
-      alert(`Error: ${data.message || 'Unknown error occurred'}`);
+      console.log('Response Data:', data);
+      if (response.ok) {
+        localStorage.setItem('Login', 'true');
+        alert('Registration successful!');
+        navigate('/');
+      } else {
+        alert(`Error: ${data.message || 'Unknown error occurred'}`);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+      alert('An error occurred. Please try again later.');
     }
-  } catch (error) {
-    console.log('Error:', error);
-    alert('An error occurred. Please try again later.');
-  }
-  
+
   };
-  const handleLoginSubmit = async (e)=>{
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch('http://localhost:5000/login', {
@@ -66,11 +66,11 @@ function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: email, 
+          username: email,
           password,
         }),
       });
-  
+
       const data = await response.json();
       console.log('Response Status:', response.status);
       console.log('Response Data:', data);
@@ -81,12 +81,12 @@ function Login() {
       } else {
         alert(`Error: ${data.message || 'Invalid username or password'}`);
       }
-        } catch (error) {
-          console.log('Error:', error);
-          alert('An error occurred. Please try again later.');
-      }
-   };
-  
+    } catch (error) {
+      console.log('Error:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  };
+
   return (
     <div className="bg-[#023E53] flex justify-center items-center min-h-screen">
       <div className="flex flex-row bg-white w-[856px] h-[560px] rounded-[10px] shadow-[2.5px_2.5px_10px_0px_black]">
@@ -107,34 +107,32 @@ function Login() {
 
           {/* Navigation */}
           <div className="text-center flex flex-row items-center justify-center mt-5 mb-8 ">
-          <nav
-                className={`text-center  pr-[16px] border-r-[3px] border-[#07475D]`}
-              >
-                <a
-                  href="#login"
-                  onClick={() => toggleForm("login")}
-                  className={`text-[#07475D] text-[30px] pb-[5px] ${
-                    currentForm === "login" ? "border-b-2 border-[#07475D]" : ""
+            <nav
+              className={`text-center  pr-[16px] border-r-[3px] border-[#07475D]`}
+            >
+              <a
+                href="#login"
+                onClick={() => toggleForm("login")}
+                className={`text-[#07475D] text-[30px] pb-[5px] ${currentForm === "login" ? "border-b-2 border-[#07475D]" : ""
                   }`}
-                >
-                  Login
-                </a>
-              </nav>
+              >
+                Login
+              </a>
+            </nav>
 
-              <nav
-                className={`w-1/2 text-center pl-[16px] }`}
-              >
-                <a
-                  href="#register"
-                  onClick={() => toggleForm("register")}
-                  className={`text-[#07475D] text-[30px] pb-[5px]  ${
-                    currentForm ===  "register"?"border-b-2 border-[#07475D]" : ""
+            <nav
+              className={`w-1/2 text-center pl-[16px] }`}
+            >
+              <a
+                href="#register"
+                onClick={() => toggleForm("register")}
+                className={`text-[#07475D] text-[30px] pb-[5px]  ${currentForm === "register" ? "border-b-2 border-[#07475D]" : ""
                   }`}
-                
-                >
-                  Register
-                </a>
-              </nav>
+
+              >
+                Register
+              </a>
+            </nav>
           </div>
 
           {/* Forms */}
@@ -147,7 +145,7 @@ function Login() {
                 placeholder="Enter Username/Email Address"
                 className="border pl-2 rounded-[10px] w-full h-[50px] "
                 value={email}
-                onChange={(e)=> setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <input
@@ -157,7 +155,7 @@ function Login() {
                 placeholder="Enter Password"
                 className="border pl-2 rounded-[10px] w-full h-[50px]"
                 value={password}
-                onChange={(e)=>setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <div className="flex flex-row mb-[10px]">
@@ -228,7 +226,7 @@ function Login() {
                 placeholder="Enter Email Address"
                 className="border p-2 rounded w-full"
                 value={email}
-                onChange={(e)=> setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
               <input
@@ -237,7 +235,7 @@ function Login() {
                 placeholder="Enter Username"
                 className="border p-2 rounded w-full"
                 value={username}
-                onChange={(e)=> setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
               <input
@@ -246,7 +244,7 @@ function Login() {
                 placeholder="Enter First Name"
                 className="border p-2 rounded w-full"
                 value={firstname}
-                onChange={(e)=> setFirstname(e.target.value)}
+                onChange={(e) => setFirstname(e.target.value)}
                 required
               />
               <input
@@ -255,7 +253,7 @@ function Login() {
                 placeholder="Enter Last Name"
                 className="border p-2 rounded w-full"
                 value={lastname}
-                onChange={(e)=>setLastname(e.target.value)}
+                onChange={(e) => setLastname(e.target.value)}
                 required
               />
               <input
@@ -263,7 +261,7 @@ function Login() {
                 placeholder="Enter Password"
                 className="border p-2 rounded w-full"
                 value={password}
-                onChange={(e)=> setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button
