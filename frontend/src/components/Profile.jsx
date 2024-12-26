@@ -1,12 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {
+    const [lastname, setLastname] = useState('');
+    const [firstname, setFirstname] = useState('');
     const navigate = useNavigate();
+    const [Login,setLogin]=useState(false)
 
     const goToHome = () => {
-      navigate('/');
+        navigate('/');
     };
+
+    const HandleLogout = () => {
+        setLogin(false);
+        localStorage.setItem('Login', 'false');
+        navigate('/');
+    };
+
+
 
     return (
         <>
@@ -24,10 +35,13 @@ function Profile() {
                     ><img
                             id='search'
                             className='w-[24px] h-[24px]'
-                            src="../../public/images/search-profile.png"
+                            src="/images/search-profile.png"
                             alt="Search" />
                     </button>
                 </div>
+                <button className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>
+                    Post Job
+                </button>
             </div>
 
             {/* Profile Container */}
@@ -36,23 +50,23 @@ function Profile() {
                     <div className='bg-[#4C4343] h-[175px] rounded-t-[5px]'>
                         <img
                             className='absolute w-[170px] h-[170px] mt-[45px] ml-[30px]'
-                            src="../../public/images/user-icon.png"
+                            src="/images/user-icon.png"
                             alt="icon" />
                     </div>
                     <div className='flex'>
                         <p
                             id='firstname'
-                            className='mt-[57px] ml-[30px] text-[35px] font-bold'>Bay</p>
+                            className='mt-[57px] ml-[30px] text-[35px] font-bold'></p>
                         <p
                             id='lastname'
-                            className='mt-[57px] ml-[10px] text-[35px] font-bold'>Kdang</p>
+                            className='mt-[57px] ml-[10px] text-[35px] font-bold'></p>
 
                         <button
                             type='button'
                             className='absolute mt-[25px] ml-[800px]'>
                             <img
                                 className='w-[22px] h-[22px]'
-                                src="../../public/images/pencil.png"
+                                src="/images/pencil.png"
                                 alt="Edit" />
                         </button>
                     </div>
@@ -79,7 +93,7 @@ function Profile() {
                             className='absolute mt-[25px] ml-[750px]'>
                             <img
                                 className='w-[22px] h-[22px]'
-                                src="../../public/images/addition.png"
+                                src="/images/addition.png"
                                 alt="Edit" />
                         </button>
                         <button
@@ -87,7 +101,7 @@ function Profile() {
                             className='absolute mt-[25px] ml-[800px]'>
                             <img
                                 className='w-[22px] h-[22px]'
-                                src="../../public/images/pencil.png"
+                                src="/images/pencil.png"
                                 alt="Edit" />
                         </button>
                     </div>
@@ -105,13 +119,22 @@ function Profile() {
                             className='absolute mt-[25px] ml-[800px]'>
                             <img
                                 className='w-[22px] h-[22px]'
-                                src="../../public/images/pencil.png"
+                                src="/images/pencil.png"
                                 alt="Edit" />
                         </button>
                     </div>
                     <p
                         id='skills'
                         className='ml-[30px] mt-[15px] font-semibold'>Engineering</p>
+                </div>
+
+                <div className='flex mt-[50px] justify-center'>
+                    <button
+                        className='w-[100px] h-[35px] text-red-800 bg-white shadow-inner border-0 rounded-[5px] hover:bg-red-800 hover:text-white'
+                        onClick={HandleLogout}
+                    >
+                        Logout
+                    </button>
                 </div>
             </div>
         </>
