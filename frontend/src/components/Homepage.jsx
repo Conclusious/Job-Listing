@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const navigate = useNavigate();
+  const [Login,setLogin]=useState(false)
+
+  useEffect(()=>{
+    const loggedIn = localStorage.getItem('Login')=='true';
+    setLogin(loggedIn);
+  },[]);
 
   const goToLogin = () => {
     navigate('/login');
@@ -18,12 +24,28 @@ function Homepage() {
       <header className="flex justify-between items-center bg-white h-20 px-8">
         <h2 className="text-3xl text-blue-800 font-semibold">MuYMuY</h2>
         <div className="flex gap-2">
-          <button onClick={goToRegister} className="bg-blue-800 text-white px-6 py-2 rounded-full hover:bg-blue-600">
-            Sign Up
-          </button>
-          <button onClick={goToLogin} className="bg-white border border-black text-blue-800 px-6 py-2 rounded-full hover:bg-blue-300">
-            Sign In
-          </button>
+          {Login ? (
+            <img
+              src="/images/user-icon.png"
+              alt="Account Icon"
+              className="w-10 h-10 rounded-full"
+            />
+          ) : (
+            <>
+              <button
+                onClick={goToRegister}
+                className="bg-blue-800 text-white px-6 py-2 rounded-full hover:bg-blue-600"
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={goToLogin}
+                className="bg-white border border-black text-blue-800 px-6 py-2 rounded-full hover:bg-blue-300"
+              >
+                Sign In
+              </button>
+            </>
+          )}
         </div>
       </header>
 

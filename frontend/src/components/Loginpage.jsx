@@ -45,6 +45,7 @@ function Login() {
       console.log('Response Status:', response.status);
     console.log('Response Data:', data);
     if (response.ok) {
+      localStorage.setItem('Login', 'true');
       alert('Registration successful!');
       navigate('/');
     } else {
@@ -74,6 +75,7 @@ function Login() {
       console.log('Response Status:', response.status);
       console.log('Response Data:', data);
       if (response.ok) {
+        localStorage.setItem('Login', 'true');
         alert('Login successful!');
         navigate('/');
       } else {
