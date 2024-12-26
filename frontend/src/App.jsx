@@ -14,10 +14,7 @@ function App() {
         <Route path="/Login" element={<Loginpage/>}></Route>
         <Route path="/Profile" element={<Profile/>}></Route>
         <Route path="/SearchResult" element={<SearchResult/>}></Route>
-<<<<<<< HEAD
-=======
         <Route path='/JobPost' element={<JobPost/>}></Route>
->>>>>>> a0bf2944057a47592473f215ed28781235144794
         <Route path="*" element={<div>404 - Page Not Found</div>}></Route>
       </Routes>
     </BrowserRouter>
