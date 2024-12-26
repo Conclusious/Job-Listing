@@ -15,17 +15,9 @@ export default {
         main: ['Roboto', 'sans-serif'], // Replace with your font family
       },
       fontFamily: {
+        'manrope': 'Manrope',
         'merriweather-sans': ['"Merriweather Sans"', 'sans-serif'],
-      },
-      spacing: {
-        '18': '4.5rem', // Example spacing
-      },
-      width: {
-        '300px': '300px',
-      },
-      height: {
-        '400px': '400px',
-      },
+      }
     },
   },
   plugins: [],
