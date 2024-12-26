@@ -18,18 +18,36 @@ function Homepage() {
     navigate('/login#register'); 
   };
 
+  const goToAccount = () => {
+    navigate('/Profile'); 
+  };
+  
+  const HandleLogout =()=>{
+    setLogin(false);
+    localStorage.setItem('Login','false');
+    navigate('/');
+  }
   return (
     <div id="Homepage" className="flex flex-col">
       {/* Header Section */}
       <header className="flex justify-between items-center bg-white h-20 px-8">
         <h2 className="text-3xl text-blue-800 font-semibold">MuYMuY</h2>
-        <div className="flex gap-2">
+        <div className="flex gap-5">
           {Login ? (
+            <div className="flex items-center gap-2">
             <img
               src="/images/user-icon.png"
               alt="Account Icon"
               className="w-10 h-10 rounded-full"
+              onClick={goToAccount}
             />
+            <button
+              onClick={HandleLogout}
+              className="bg-black text-white px-6 py-2 rounded-full"
+            >
+              Logout
+            </button>
+          </div>
           ) : (
             <>
               <button
