@@ -85,7 +85,7 @@ function Homepage() {
             </div>
             <div className="sitesearch flex justify-center mx-auto max-w-[925px] pt-8">
                 {/* Keyword Section */}
-                <div className="keyword relative flex-1 text-center text-white/65">
+                <div className="keyword relative flex-1 text-center text-black">
                     <input
                     type="text"
                     className="inpu w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] rounded-l-lg h-[60px] min-h-[60px] flex items-center"
@@ -104,7 +104,7 @@ function Homepage() {
                 </div>
                 
                 {/* Location Section */}
-                <div className="location relative flex-1 text-center text-white/65">
+                {/* <div className="location relative flex-1 text-center text-white/65">
                     <input
                     type="text"
                     className="loc-input w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] h-[60px] min-h-[52px] flex items-center border-l-0 rounded-r-none"
@@ -120,7 +120,7 @@ function Homepage() {
                     src="/images/location.png"
                     alt="Location Icon"
                     />
-                </div>
+                </div> */}
                 
                 {/* Submit Section */}
                 <div className="submit">

@@ -12,6 +12,7 @@ function JobPost() {
     const location = useLocation();
 
     const gotoHome = () => {
+        console.log('gotoHome called');
         navigate('/');
     }
 
@@ -65,7 +66,8 @@ function JobPost() {
                             id=""
                             className='w-[24px] h-[24px]'
                             src="../../public/images/search-profile.png"
-                            alt="Search" />
+                            alt="Search"
+                            onError={() => console.log('Image not found')} />
                     </button>
                 </div>
             </div>
