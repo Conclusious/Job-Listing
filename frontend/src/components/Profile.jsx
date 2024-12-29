@@ -8,6 +8,9 @@ function Profile() {
       navigate('/');
     };
 
+    const firstname =localStorage.getItem('firstname');
+    const lastname =localStorage.getItem('lastname');
+
     return (
         <>
             {/* Header Container */}
@@ -42,10 +45,10 @@ function Profile() {
                     <div className='flex'>
                         <p
                             id='firstname'
-                            className='mt-[57px] ml-[30px] text-[35px] font-bold'>Bay</p>
+                            className='mt-[57px] ml-[30px] text-[35px] font-bold'> {firstname || 'First Name'}</p>
                         <p
                             id='lastname'
-                            className='mt-[57px] ml-[10px] text-[35px] font-bold'>Kdang</p>
+                            className='mt-[57px] ml-[10px] text-[35px] font-bold'> {lastname || 'Last Name'}</p>
 
                         <button
                             type='button'

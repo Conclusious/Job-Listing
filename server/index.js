@@ -17,21 +17,32 @@ app.post('/register', (req, res) => {
       console.error('Error registering user:', err);
       return res.status(500).json({ message: 'Error registering user' });
     }
-    res.status(200).json({ message: 'Registration successful', iduser: result.insertId });
+    res.status(200).json({ 
+      message: 'Registration successful', 
+      iduser: result.insertId,
+      firstname: firstname,
+      lastname: lastname,
+    });
   });
 });
 
 app.post('/login',(req,res)=>{
   const {username,password}=req.body;
 
-  const sql ='SELECT * FROM user WHERE (username=? OR email=?) AND password =?';
+  const sql ='SELECT email,username,first_name AS firstname,last_name AS lastname FROM user WHERE (username=? OR email=?) AND password =?';
   db.query(sql,[username ,username,password],(err,result)=>{
     if (err) {
       return res.status(500).json({ message: 'Server error' });
     }
 
     if (result.length > 0) {
-      res.status(200).json({ message: 'Login successful', user: result[0] });
+      res.status(200).json({
+        message: 'Login successful',
+        firstname: result[0].firstname,
+        lastname: result[0].lastname,
+        username: result[0].username,
+        email: result[0].email,
+        });
     } else {
       res.status(401).json({ message: 'Invalid username/email or password' });
     }

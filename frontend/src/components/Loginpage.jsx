@@ -46,6 +46,8 @@ function Login() {
       console.log('Response Data:', data);
       if (response.ok) {
         localStorage.setItem('Login', 'true');
+        localStorage.setItem('firstname',firstname);
+        localStorage.setItem('lastname',lastname);
         alert('Registration successful!');
         navigate('/');
       } else {
@@ -76,6 +78,8 @@ function Login() {
       console.log('Response Data:', data);
       if (response.ok) {
         localStorage.setItem('Login', 'true');
+        localStorage.setItem('firstname',data.firstname);
+        localStorage.setItem('lastname',data.lastname);
         alert('Login successful!');
         navigate('/');
       } else {
