@@ -1,24 +1,22 @@
-import React from 'react';
+import React ,{useState}from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {
-    const [lastname, setLastname] = useState('');
-    const [firstname, setFirstname] = useState('');
+    const firstname =localStorage.getItem('firstname');
+    const lastname =localStorage.getItem('lastname');
+    const [Login, setLogin] = useState(false);
     const navigate = useNavigate();
-    const [Login,setLogin]=useState(false)
 
     const goToHome = () => {
-        navigate('/');
+      navigate('/');
     };
+
 
     const HandleLogout = () => {
         setLogin(false);
         localStorage.setItem('Login', 'false');
         navigate('/');
     };
-
-    const Firstname = localStorage.getItem('firstname');
-    const Lastname = localStorage.getItem('lastname');
 
     return (
         <>
@@ -68,9 +66,6 @@ function Profile() {
                                 alt="Edit" />
                         </button>
                     </div>
-                    <button className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>
-                        Post Job
-                    </button>
                     <p
                         id='bios'
                         className='mt-[20px] ml-[30px] text-[20px]'>Something is here.</p>
@@ -128,7 +123,6 @@ function Profile() {
                         id='skills'
                         className='ml-[30px] mt-[15px] font-semibold'>Engineering</p>
                 </div>
-
                 <div className='flex mt-[50px] justify-center'>
                     <button
                         className='w-[100px] h-[35px] text-red-800 bg-white shadow-inner border-0 rounded-[5px] hover:bg-red-800 hover:text-white'
