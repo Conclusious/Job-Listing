@@ -21,12 +21,7 @@ function Homepage() {
   const goToAccount = () => {
     navigate('/Profile'); 
   };
-  
-  const HandleLogout =()=>{
-    setLogin(false);
-    localStorage.setItem('Login','false');
-    navigate('/');
-  }
+
   return (
     <div id="Homepage" className="flex flex-col">
       {/* Header Section */}
@@ -34,20 +29,12 @@ function Homepage() {
         <h2 className="text-3xl text-blue-800 font-semibold">MuYMuY</h2>
         <div className="flex gap-5">
           {Login ? (
-            <div className="flex items-center gap-2">
             <img
               src="/images/user-icon.png"
               alt="Account Icon"
-              className="w-10 h-10 rounded-full"
+              className="w-10 h-10 rounded-full hover:cursor-pointer"
               onClick={goToAccount}
             />
-            <button
-              onClick={HandleLogout}
-              className="bg-black text-white px-6 py-2 rounded-full"
-            >
-              Logout
-            </button>
-          </div>
           ) : (
             <>
               <button
@@ -98,7 +85,7 @@ function Homepage() {
             </div>
             <div className="sitesearch flex justify-center mx-auto max-w-[925px] pt-8">
                 {/* Keyword Section */}
-                <div className="keyword relative flex-1 text-center text-white/65">
+                <div className="keyword relative flex-1 text-center text-black">
                     <input
                     type="text"
                     className="inpu w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] rounded-l-lg h-[60px] min-h-[60px] flex items-center"
@@ -117,7 +104,7 @@ function Homepage() {
                 </div>
                 
                 {/* Location Section */}
-                <div className="location relative flex-1 text-center text-white/65">
+                {/* <div className="location relative flex-1 text-center text-white/65">
                     <input
                     type="text"
                     className="loc-input w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] h-[60px] min-h-[52px] flex items-center border-l-0 rounded-r-none"
@@ -133,7 +120,7 @@ function Homepage() {
                     src="/images/location.png"
                     alt="Location Icon"
                     />
-                </div>
+                </div> */}
                 
                 {/* Submit Section */}
                 <div className="submit">
