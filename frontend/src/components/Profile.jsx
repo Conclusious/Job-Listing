@@ -1,14 +1,14 @@
-import React ,{useState}from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {
-    const firstname =localStorage.getItem('firstname');
-    const lastname =localStorage.getItem('lastname');
+    const firstname = localStorage.getItem('firstname');
+    const lastname = localStorage.getItem('lastname');
     const [Login, setLogin] = useState(false);
     const navigate = useNavigate();
 
     const goToHome = () => {
-      navigate('/');
+        navigate('/');
     };
 
 
@@ -38,6 +38,9 @@ function Profile() {
                             alt="Search" />
                     </button>
                 </div>
+                <button className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>
+                    Post Job
+                </button>
             </div>
 
             {/* Profile Container */}
