@@ -1,22 +1,107 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {
     const firstname = localStorage.getItem('firstname');
     const lastname = localStorage.getItem('lastname');
     const [Login, setLogin] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [bios, setBios] = useState('');
+    const [city, setCity] = useState('');
+    const [country, setCountry] = useState('');
     const navigate = useNavigate();
 
     const goToHome = () => {
         navigate('/');
     };
 
+    const goToPost = () => {
+        navigate('/JobPost');
+    }
 
     const HandleLogout = () => {
         setLogin(false);
-        localStorage.setItem('Login', 'false');
+        localStorage.removeItem('Login');
+        localStorage.removeItem('userID');
+        localStorage.removeItem('firstname');
+        localStorage.removeItem('lastname');
         navigate('/');
     };
+
+
+    const handleBioSubmit = async (e) => {
+        e.preventDefault();
+
+        const iduser = parseInt(localStorage.getItem('userID'), 10);
+
+        if (isNaN(iduser)) {
+            alert('User ID not found!');
+            return;
+        }
+
+        console.log('Submitting data:', { iduser, bios, city, country });
+
+        try {
+            const response = await fetch('http://localhost:5000/edituser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    iduser,
+                    bios,
+                    city,
+                    country,
+                }),
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Profile updated successfully');
+                setShowEdit(false); // Close the edit modal
+                fetchUserProfile(); // Fetch updated profile data
+            } else {
+                alert(`Error: ${data.message}`);
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again later.');
+        }
+    };
+
+
+    useEffect(() => {
+        // Fetch user profile data when component mounts
+        const fetchUserProfile = async () => {
+            const iduser = localStorage.getItem('userID');  // Assuming user ID is saved in localStorage
+            if (!iduser) {
+                alert('User not logged in');
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/selectuser?iduser=${iduser}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    setFirstname(data.firstname);
+                    setLastname(data.lastname);
+                    setBios(data.bios);
+                    setCity(data.city);
+                    setCountry(data.country);
+                } else {
+                    alert(data.message || 'Profile not found');
+                }
+            } catch (error) {
+                console.error('Error fetching user profile:', error);
+            }
+        };
+
+        fetchUserProfile();
+    }, []); // Empty dependency array ensures this runs only once on mount
+
+    const toggleEditModal = () => {
+        setShowEdit(!showEdit);
+    }
 
     return (
         <>
@@ -38,7 +123,9 @@ function Profile() {
                             alt="Search" />
                     </button>
                 </div>
-                <button className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>
+                <button
+                    onClick={goToPost}
+                    className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>
                     Post Job
                 </button>
             </div>
@@ -62,7 +149,9 @@ function Profile() {
 
                         <button
                             type='button'
-                            className='absolute mt-[25px] ml-[800px]'>
+                            className='absolute mt-[25px] ml-[800px]'
+                            onClick={toggleEditModal}
+                        >
                             <img
                                 className='w-[22px] h-[22px]'
                                 src="/images/pencil.png"
@@ -71,15 +160,21 @@ function Profile() {
                     </div>
                     <p
                         id='bios'
-                        className='mt-[20px] ml-[30px] text-[20px]'>Something is here.</p>
+                        className='mt-[20px] ml-[30px] text-[20px]'>
+                        {bios}
+                    </p>
                     <div className='flex ml-[30px] mt-[8px]'>
                         <address
                             id='city'
-                            className='text-[#ADA3A3] text-[14px]'>Phnom Penh</address>
-                        <p className='mr-1 text-[#ADA3A3] text-[14px]'>,</p>
+                            className='text-[#ADA3A3] text-[14px]'>
+                            {city}<span>,</span>
+                        </address>
+                        <p className='mr-1 text-[#ADA3A3] text-[14px]'>
+                            {country}
+                        </p>
                         <address
                             id='country'
-                            className='text-[#ADA3A3] text-[14px]'>Cambodia</address>
+                            className='text-[#ADA3A3] text-[14px]'></address>
                     </div>
                 </div>
 
@@ -91,14 +186,16 @@ function Profile() {
                             type='button'
                             className='absolute mt-[25px] ml-[750px]'>
                             <img
+                                id='add-edu'
                                 className='w-[22px] h-[22px]'
                                 src="/images/addition.png"
-                                alt="Edit" />
+                                alt="Add" />
                         </button>
                         <button
                             type='button'
                             className='absolute mt-[25px] ml-[800px]'>
                             <img
+                                id='add-edu'
                                 className='w-[22px] h-[22px]'
                                 src="/images/pencil.png"
                                 alt="Edit" />
@@ -115,8 +212,18 @@ function Profile() {
                         <h1 className='ml-[30px] pt-[20px] text-[25px] font-merriweather-sans font-bold'>Skills</h1>
                         <button
                             type='button'
+                            className='absolute mt-[25px] ml-[750px]'>
+                            <img
+                                id='add-skills'
+                                className='w-[22px] h-[22px]'
+                                src="/images/addition.png"
+                                alt="Add" />
+                        </button>
+                        <button
+                            type='button'
                             className='absolute mt-[25px] ml-[800px]'>
                             <img
+                                id='edit-skills'
                                 className='w-[22px] h-[22px]'
                                 src="/images/pencil.png"
                                 alt="Edit" />
@@ -135,6 +242,73 @@ function Profile() {
                     </button>
                 </div>
             </div>
+
+            {/* Edit Container */}
+            {showEdit && (
+                <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50'>
+                    <div className='bg-white w-[1100px] h-[600px] rounded-[10px] p-5'>
+                        <div className='flex items-center justify-between mb-[25px]'>
+                            <h1 className='ml-[50px] text-[40px] font-merriweather-sans font-semibold'>Edit Profile</h1>
+                            <button
+                                className='mr-[40px] w-[40px] h-[50px]'
+                                onClick={toggleEditModal}
+                            >
+                                <img
+                                    src="images/cross.png"
+                                    alt="go-back"
+                                /></button>
+                        </div>
+
+                        <div className='border-t-2 mb-[25px]'></div>
+
+                        <div className='h-[calc(100%-120px)] overflow-y-auto'>
+                            <form onSubmit={handleBioSubmit}>
+                                {/* Bios */}
+                                <label className='ml-[50px] text-[25px]'>Bios
+                                </label>
+                                <textarea
+                                    id='bios'
+                                    type="text"
+                                    placeholder='Write something...'
+                                    className='flex justify-self-center mt-[20px] w-[950px] h-[200px] text-[20px] indent-[15px] border-black border-[1.5px] rounded-[5px] overflow-y-auto'
+                                    value={bios}
+                                    onChange={(e) => setBios(e.target.value)}
+                                />
+
+                                {/* Location */}
+                                <h1 className='ml-[50px] mt-[50px] mb-[20px] text-[35px] font-merriweather-sans font-semibold'>Location</h1>
+                                <label className='ml-[50px] text-[25px]'>City
+                                </label>
+                                <input
+                                    id='city'
+                                    type="text"
+                                    placeholder='e.g. Phnom Penh'
+                                    className='flex justify-self-center  mt-[20px] mb-[20px] w-[950px] h-[50px] text-[20px] indent-[15px] border-black border-[1.5px] rounded-[5px]'
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                />
+
+                                <label className='ml-[50px] text-[25px]'>Country
+                                </label>
+                                <input
+                                    id='country'
+                                    type="text"
+                                    placeholder='e.g. Cambodia'
+                                    className='flex justify-self-center mt-[20px] mb-[20px] w-[950px] h-[50px] text-[20px] indent-[15px] border-black border-[1.5px] rounded-[5px]'
+                                    value={country}
+                                    onChange={(e) => setCountry(e.target.value)}
+                                />
+
+                                <button
+                                    type='submit'
+                                    className='flex justify-self-center place-content-center place-items-center mt-[30px] w-[100px] h-[50px] rounded-[5px] text-blue-600 shadow-inner border-[1.5px] hover:bg-blue-600 hover:text-white'
+                                >Confirm
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }

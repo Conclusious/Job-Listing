@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // import the styles
 
 function JobPost() {
     const navigate = useNavigate();
@@ -65,7 +67,7 @@ function JobPost() {
                     ><img
                             id=""
                             className='w-[24px] h-[24px]'
-                            src="../../public/images/search-profile.png"
+                            src="images/search-profile.png"
                             alt="Search"
                             onError={() => console.log('Image not found')} />
                     </button>
@@ -142,13 +144,13 @@ function JobPost() {
                             <h1 className="text-center text-[25px] font-bold mb-[55px]">Description
                                 <span className="text-[#ff2020]">*</span>
                             </h1>
-                            <textarea
-                                className="w-[820px] rounded-[5px] h-[500px] border-black border-[1px] indent-1 overflow-y-scroll resize-none"
+                            <ReactQuill
+                                className="w-[820px] rounded-[5px] h-[540px] border-black border-[1px] overflow-y-hidden resize-none"
                                 id="description"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
                                 required
-                            ></textarea>
+                            />
                         </div>
 
                         <div className="justify-self-center">
