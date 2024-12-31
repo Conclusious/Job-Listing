@@ -3,12 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from './components/Homepage';
 import Loginpage from './components/Loginpage';
 import Profile from "./components/Profile";
-// import SearchResult from './components/SearchResult';
+import Search from './components/Search';
 // import JobList from './components/JobList';
 // import JobDetails from './components/JobDetails';
 // import JobBoardLayout from "./components/JobBoardLayout";
 // import Container from "./components/Container";
 import JobPost from "./components/JobPost";
+
 function App() {
   // const [jobs, setJobs] = useState([]);
 
@@ -27,7 +28,7 @@ function App() {
           <Route path="/" element={<Homepage />} />
           <Route path="/Login" element={<Loginpage />} />
           <Route path="/Profile" element={<Profile />} />
-          {/* <Route path="/JobList" element={<JobList jobs={jobs} />} /> */}
+          <Route path="/Search" element={<Search />} />
           <Route path="/JobPost" element={<JobPost />} />
           <Route path="*" element={<div>404 - Page Not Found</div>} />
         </Routes>

@@ -1,31 +1,24 @@
-import React from "react";
+import React from 'react';
 
 const JobDetails = ({ job }) => {
-  if (!job) return <div>Select a job to see details</div>;
+  if (!job) return <div className="p-4 text-white">Please select a job to see details</div>;
 
   return (
-    <div className="w-1/2 p-6">
-      <h1 className="text-2xl font-bold">{job.title}</h1>
-      <p className="text-gray-700">{job.company}</p>
-      <p className="text-gray-700">{job.location}</p>
-      <div className="mt-4">
-        <button className="bg-blue-600 text-white px-4 py-2 rounded mr-2">Get Contact</button>
-        <button className="bg-gray-300 px-4 py-2 rounded">Share</button>
-      </div>
+    <div className="bg-white p-6 rounded-lg shadow-md h-full">
+      <h2 className="text-2xl font-bold mb-4">{job.title}</h2>
+      <p className="text-xl text-gray-700 mb-2"><strong>Company:</strong> {job.company}</p>
+      <p className="text-sm text-gray-500 mb-4">{job.location}</p>
+      <p className="mb-2"><strong>Type:</strong> {job.type}</p>
+      <p className="mb-2"><strong>Workplace:</strong> {job.workplace}</p>
+      <p className="mb-2"><strong>Contact:</strong> {job.contact}</p>
 
-      <div className="mt-6">
-        <h2 className="font-bold text-xl">About this job</h2>
-        <p className="text-gray-700 mt-2">{job.details.description}</p>
-
-        <h3 className="font-bold mt-4">Job Responsibilities</h3>
-        <ul className="list-disc pl-6 text-gray-700">
-          {job.details.responsibilities.map((res, index) => (
-            <li key={index}>{res}</li>
-          ))}
-        </ul>
-
-        <h3 className="font-bold mt-4">Qualifications</h3>
-        <p className="text-gray-700">{job.details.qualifications}</p>
+      {/* Render the description using dangerouslySetInnerHTML */}
+      <div className="mb-4">
+        <strong>Description:</strong>
+        <div
+          className="description-content mt-2 text-gray-700"
+          dangerouslySetInnerHTML={{ __html: job.details.description }}
+        />
       </div>
     </div>
   );

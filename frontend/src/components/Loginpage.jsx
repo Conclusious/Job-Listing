@@ -46,6 +46,7 @@ function Login() {
       console.log('Response Data:', data);
       if (response.ok) {
         localStorage.setItem('Login', 'true');
+        localStorage.setItem('iduser', iduser);
         localStorage.setItem('firstname',firstname);
         localStorage.setItem('lastname',lastname);
         alert('Registration successful!');
@@ -78,7 +79,7 @@ function Login() {
       console.log('Response Data:', data);
       if (response.ok) {
         localStorage.setItem('Login', 'true');
-        localStorage.setItem('userID', data.iduser);
+        localStorage.setItem('iduser', data.iduser);
         localStorage.setItem('firstname',data.firstname);
         localStorage.setItem('lastname',data.lastname);
         alert('Login successful!');

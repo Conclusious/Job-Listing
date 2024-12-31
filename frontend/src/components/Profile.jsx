@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Profile() {
@@ -27,77 +27,6 @@ function Profile() {
         localStorage.removeItem('lastname');
         navigate('/');
     };
-
-
-    const handleBioSubmit = async (e) => {
-        e.preventDefault();
-
-        const iduser = parseInt(localStorage.getItem('userID'), 10);
-
-        if (isNaN(iduser)) {
-            alert('User ID not found!');
-            return;
-        }
-
-        console.log('Submitting data:', { iduser, bios, city, country });
-
-        try {
-            const response = await fetch('http://localhost:5000/edituser', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    iduser,
-                    bios,
-                    city,
-                    country,
-                }),
-            });
-            const data = await response.json();
-
-            if (response.ok) {
-                alert('Profile updated successfully');
-                setShowEdit(false); // Close the edit modal
-                fetchUserProfile(); // Fetch updated profile data
-            } else {
-                alert(`Error: ${data.message}`);
-            }
-        } catch (error) {
-            alert('An error occurred. Please try again later.');
-        }
-    };
-
-
-    useEffect(() => {
-        // Fetch user profile data when component mounts
-        const fetchUserProfile = async () => {
-            const iduser = localStorage.getItem('userID');  // Assuming user ID is saved in localStorage
-            if (!iduser) {
-                alert('User not logged in');
-                return;
-            }
-
-            try {
-                const response = await fetch(`http://localhost:5000/selectuser?iduser=${iduser}`);
-                const data = await response.json();
-
-                if (response.ok) {
-                    setFirstname(data.firstname);
-                    setLastname(data.lastname);
-                    setBios(data.bios);
-                    setCity(data.city);
-                    setCountry(data.country);
-                } else {
-                    alert(data.message || 'Profile not found');
-                }
-            } catch (error) {
-                console.error('Error fetching user profile:', error);
-            }
-        };
-
-        fetchUserProfile();
-    }, []); // Empty dependency array ensures this runs only once on mount
 
     const toggleEditModal = () => {
         setShowEdit(!showEdit);

@@ -4,12 +4,14 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // import the styles
 
 function JobPost() {
+    const iduser = localStorage.getItem('iduser');
     const navigate = useNavigate();
     const [job_title, setJob_title] = useState('');
     const [workplace, setWorkplace] = useState('');
     const [job_type, setJob_type] = useState('');
     const [company, setCompany] = useState('');
     const [job_location, setJob_location] = useState('');
+    const [contact, setContact] = useState('');
     const [description, setDescription] = useState('');
     const location = useLocation();
 
@@ -17,11 +19,11 @@ function JobPost() {
         console.log('gotoHome called');
         navigate('/');
     }
-
+    
     const handlePost = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/JobPost', {
+            const response = await fetch('http://localhost:5000/jobpost', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -32,22 +34,26 @@ function JobPost() {
                     job_type,
                     company,
                     job_location,
-                    description,
+                    contact,
+                    description, // Send the HTML content
+                    iduser
                 }),
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
-                alert('Job posted successful!');
+                alert('Job posted successfully!');
             } else {
                 alert(`Error: ${data.message || 'Unknown error occurred'}`);
             }
         } catch (error) {
             console.log('Error:', error);
-            alert('An error occured. Please try again later.');
+            alert('An error occurred. Please try again later.');
         }
     };
+    
+    
 
     return (
         <>
@@ -136,6 +142,15 @@ function JobPost() {
                                     onChange={(e) => setJob_location(e.target.value)}
                                     required
                                 />
+                                <p className="text-[15px] text-[#777777] mb-[5px]">Contact</p>
+                                <input
+                                    id="contact"
+                                    className="border-black border-[1px] rounded-[5px] w-[400px] h-[30px] mb-[30px] indent-1"
+                                    type="text"
+                                    value={contact}
+                                    onChange={(e) => setContact(e.target.value)}
+                                    required
+                                />
                             </div>
                         </div>
 
@@ -148,7 +163,7 @@ function JobPost() {
                                 className="w-[820px] rounded-[5px] h-[540px] border-black border-[1px] overflow-y-hidden resize-none"
                                 id="description"
                                 value={description}
-                                onChange={(e) => setDescription(e.target.value)}
+                                onChange={setDescription}
                                 required
                             />
                         </div>
