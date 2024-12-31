@@ -19,7 +19,11 @@ function JobPost() {
         console.log('gotoHome called');
         navigate('/');
     }
-    
+
+    const goToAccount = () => {
+        navigate('/Profile');
+    };
+
     const handlePost = async (e) => {
         e.preventDefault();
         try {
@@ -39,9 +43,9 @@ function JobPost() {
                     iduser
                 }),
             });
-    
+
             const data = await response.json();
-    
+
             if (response.ok) {
                 alert('Job posted successfully!');
             } else {
@@ -52,8 +56,8 @@ function JobPost() {
             alert('An error occurred. Please try again later.');
         }
     };
-    
-    
+
+
 
     return (
         <>
@@ -71,19 +75,24 @@ function JobPost() {
                         type="button"
                         className='place-items-center w-[75px] h-[35px] shadow-inner border-[3px] rounded-r-[5px]'
                     ><img
-                            id=""
                             className='w-[24px] h-[24px]'
                             src="images/search-profile.png"
                             alt="Search"
                             onError={() => console.log('Image not found')} />
                     </button>
+                    <img
+                        src="/images/user-icon.png"
+                        alt="Account Icon"
+                        className="absolute top-[30px] ml-[700px] w-10 h-10 hover:cursor-pointer"
+                        onClick={goToAccount}
+                    />
                 </div>
             </div>
 
             {/* Job Post Container */}
             <form onSubmit={handlePost}>
                 <div className="bg-[#023E53] h-[1400px] overflow-hidden">
-                    <div className="justify-self-center mt-[35px] rounded-[10px] bg-white h-[1150px] w-[950px]">
+                    <div className="justify-self-center mt-[35px] rounded-[10px] bg-white h-[1200px] w-[950px]">
                         <p className="ml-[30px] pt-[35px] text-[12px] font-semibold">
                             <span className="text-[#ff2020]">*</span>Indicates required
                         </p>
