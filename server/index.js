@@ -3,10 +3,12 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 const app = express();
+
 const db =require('./db_config/db');
 
 app.use(cors());
 app.use(express.json());
+
 
 app.post('/register', (req, res) => {
   const { email, username, firstname, lastname, password } = req.body;
@@ -26,10 +28,11 @@ app.post('/register', (req, res) => {
   });
 });
 
+
 app.post('/login',(req,res)=>{
   const {username,password}=req.body;
 
-  const sql ='SELECT email,username,first_name AS firstname,last_name AS lastname FROM user WHERE (username=? OR email=?) AND password =?';
+  const sql ='SELECT iduser, email,username,first_name AS firstname,last_name AS lastname FROM user WHERE (username=? OR email=?) AND password =?';
   db.query(sql,[username ,username,password],(err,result)=>{
     if (err) {
       return res.status(500).json({ message: 'Server error' });
@@ -38,6 +41,7 @@ app.post('/login',(req,res)=>{
     if (result.length > 0) {
       res.status(200).json({
         message: 'Login successful',
+        iduser: result[0].iduser,
         firstname: result[0].firstname,
         lastname: result[0].lastname,
         username: result[0].username,
@@ -48,23 +52,52 @@ app.post('/login',(req,res)=>{
     }
   });
 });
+app.post('/jobpost', (req, res) => {
+  const { job_title, workplace, job_type, company, job_location,contact, description, iduser } = req.body;
+
+  if (!iduser) {
+      return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  const sql = 'INSERT INTO job (job_title, workplace, job_type, company, job_location,contact, description, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [job_title, workplace, job_type, company, job_location,contact, description, iduser], (err, result) => {
+      if (err) {
+          console.error('Error posting job:', err);
+          return res.status(500).json({ message: 'Error posting job' });
+      }
+      res.status(200).json({ message: 'Job posted successfully', jobID: result.insertId });
+  });
+});
+
+app.get('/jobs', (req, res) => {
+  db.query('SELECT * FROM job', (err, results) => {
+    if (err) {
+      console.error('Error fetching jobs:', err);
+      return res.status(500).json({ message: 'Error fetching jobs' });
+    }
+
+    const formattedJobs = results.map(job => ({
+      id: job.jobID,
+      iduser: job.user_id, 
+      title: job.job_title,
+      company: job.company,
+      location: job.job_location,
+      type: job.job_type,
+      workplace: job.workplace,
+      contact: job.contact,
+      details: { description: job.description },
+    }));
+
+    res.status(200).json(formattedJobs);
+  });
+});
+
   
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
 
-app.post('/jobpost', (req, res) => {
-    const {job_title, workplace, job_type, company, job_location, description}=req.body;
-    const sql = 'INSERT INTO job (job_title, workplace, job_type, company, job_location, description) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(sql, [job_title, workplace, job_type, company, job_location, description], (err, result) => {
-      if(err){
-        console.error('Error posting job:', err);
-        return res.status(500).json({message: 'Error posting job'});
-      }
-      res.status(200).json({message: 'Job posted successful', jobID: result.insertId});
-    });
-});
 
 
 const PORT = process.env.PORT || 5000;

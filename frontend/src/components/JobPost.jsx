@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function JobPost() {
+    const iduser = localStorage.getItem('iduser');
     const navigate = useNavigate();
     const [job_title, setJob_title] = useState('');
     const [workplace, setWorkplace] = useState('');
     const [job_type, setJob_type] = useState('');
     const [company, setCompany] = useState('');
     const [job_location, setJob_location] = useState('');
+    const [contact, setContact] = useState('');
     const [description, setDescription] = useState('');
     const location = useLocation();
 
@@ -19,7 +21,7 @@ function JobPost() {
     const handlePost = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/JobPost', {
+            const response = await fetch('http://localhost:5000/jobpost', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +32,9 @@ function JobPost() {
                     job_type,
                     company,
                     job_location,
+                    contact,
                     description,
+                    iduser
                 }),
             });
 
@@ -132,6 +136,15 @@ function JobPost() {
                                     type="text"
                                     value={job_location}
                                     onChange={(e) => setJob_location(e.target.value)}
+                                    required
+                                />
+                                <p className="text-[15px] text-[#777777] mb-[5px]">Contact</p>
+                                <input
+                                    id="contact"
+                                    className="border-black border-[1px] rounded-[5px] w-[400px] h-[30px] mb-[30px] indent-1"
+                                    type="text"
+                                    value={contact}
+                                    onChange={(e) => setContact(e.target.value)}
                                     required
                                 />
                             </div>
