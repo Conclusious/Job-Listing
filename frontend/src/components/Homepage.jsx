@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const navigate = useNavigate();
   const [Login,setLogin]=useState(false)
-
+  const footerRef = useRef(null);
+  const scrollToFooter = () => {
+    footerRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   useEffect(()=>{
     const loggedIn = localStorage.getItem('Login')=='true';
     setLogin(loggedIn);
@@ -18,10 +21,22 @@ function Homepage() {
     navigate('/login#register'); 
   };
 
+  const handleJobClick = () => {
+    navigate('/search');
+  };
+
   const goToAccount = () => {
     navigate('/Profile'); 
   };
+  const [searchQuery, setSearchQuery] = useState('');
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+  
   return (
     <div id="Homepage" className="flex flex-col">
       {/* Header Section */}
@@ -58,9 +73,9 @@ function Homepage() {
       <nav className="flex justify-between items-center bg-gray-200 h-16 px-8 text-lg">
         <div className="flex gap-10">
           <nav className="hover:underline cursor-pointer">Home</nav>
-          <nav className="hover:underline cursor-pointer">Job</nav>
-          <nav className="hover:underline cursor-pointer">About Us</nav>
-          <nav className="hover:underline cursor-pointer">Contact Us</nav>
+          <nav className="hover:underline cursor-pointer" onClick={handleJobClick}>Job</nav>
+          <nav className="hover:underline cursor-pointer" onClick={scrollToFooter}>About Us</nav>
+          <nav className="hover:underline cursor-pointer" onClick={scrollToFooter}>Contact Us</nav>
         </div>
         <button className="flex items-center text-lg">
           ENG
@@ -78,69 +93,34 @@ function Homepage() {
       {/* Search Section */}
       <section className="bg-[#00202B] flex flex-col items-start px-44 py-16 text-white">
         <div className="flex flex-col gap-4">
-            <div className="flex gap-2 text-4xl">
-                <h3 className="text-blue-300">Find the</h3>
-                <h3>Right</h3>
-                <h3 className="text-blue-300">Fit</h3>
+          <div className="flex gap-2 text-4xl">
+            <h3 className="text-blue-300">Find the</h3>
+            <h3>Right</h3>
+            <h3 className="text-blue-300">Fit</h3>
+          </div>
+          <form onSubmit={handleSearchSubmit} className="sitesearch flex justify-center mx-auto max-w-[925px] pt-8">
+            <div className="keyword relative flex-1 text-center text-black">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="inpu w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] rounded-l-lg h-[60px] min-h-[60px] flex items-center"
+                placeholder="Keywords and companies"
+              />
+              <img
+                className="icon absolute top-1/2 left-5 w-[18px] h-[18px] transform -translate-y-1/2"
+                src="/images/searches.png"
+                alt="Search Icon"
+              />
             </div>
-            <div className="sitesearch flex justify-center mx-auto max-w-[925px] pt-8">
-                {/* Keyword Section */}
-                <div className="keyword relative flex-1 text-center text-black">
-                    <input
-                    type="text"
-                    className="inpu w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] rounded-l-lg h-[60px] min-h-[60px] flex items-center"
-                    placeholder="Keywords and companies"
-                    />
-                    <button className="clear-input absolute top-0 bottom-0 right-0 w-10 flex items-center opacity-0 cursor-pointer">
-                    <svg>
-                        <use xlinkHref="#close"></use>
-                    </svg>
-                    </button>
-                    <img
-                    className="icon absolute top-1/2 left-5 w-[18px] h-[18px] transform -translate-y-1/2"
-                    src="/images/searches.png"
-                    alt="Search Icon"
-                    />
-                </div>
-                
-                {/* Location Section */}
-                {/* <div className="location relative flex-1 text-center text-white/65">
-                    <input
-                    type="text"
-                    className="loc-input w-full border border-gray-300 px-[55px] py-4 text-lg leading-[1.333] h-[60px] min-h-[52px] flex items-center border-l-0 rounded-r-none"
-                    placeholder="Location"
-                    />
-                    <button className="clear-input absolute top-0 bottom-0 right-0 w-10 flex items-center opacity-0 cursor-pointer">
-                    <svg>
-                        <use xlinkHref="#close"></use>
-                    </svg>
-                    </button>
-                    <img
-                    className="loc-icon absolute top-1/2 left-5 w-[18px] h-[18px] transform -translate-y-1/2"
-                    src="/images/location.png"
-                    alt="Location Icon"
-                    />
-                </div> */}
-                
-                {/* Submit Section */}
-                <div className="submit">
-                    <button className="success bg-[#8BCDE4] text-black border border-[#8BCDE4] px-[36px] py-[18px] text-[18px] leading-[1.3333333] h-[60px] min-h-[60px] rounded-tr-[8px] rounded-br-[8px] cursor-pointer">
-                    Search
-                    </button>
-                </div>
-            </div>
+            <button 
+              type="submit"
+              className="bg-[#8BCDE4] text-black px-8 py-4 rounded-r-lg"
+            >
+              Search
+            </button>
+          </form>
         </div>
-        <div className="popular-search mt-5">
-                    <h4 className="text-[#8BCDE4] text-[24px] font-normal mb-2.5">Popular Searches</h4>
-                    <div className="ButSearch flex flex-wrap gap-[11px] mt-5 max-w-[900px] w-full">
-                        {["Work From Home", "Part Time", "Customer Service", "Engineering", "IT", "Data Analyst", "Digital Marketing", "Software Engineer", "Doctor", "English Teacher"].map((search, index) => (
-                        <button key={index} className="flex items-center gap-2.5 bg-white border-0 rounded-[20px] px-[15px] py-[10px] text-[18px] text-[#00202B] cursor-pointer hover:bg-[#c6f0ff]">
-                            <img src="/images/searches.png" alt="Search Icon" className="h-[20px] w-[20px]" />
-                            {search}
-                        </button>
-                        ))}
-                    </div>
-            </div>
       </section>
 
       {/* Extra Content Section */}
@@ -150,7 +130,7 @@ function Homepage() {
                 <p className="text-xl leading-6 mb-5 max-w-[493px]">
                 Our powerful matching technology will send job matches right to your inbox.
                 </p>
-                <button className="explore-button bg-white text-[#023E53] text-lg px-6 py-3 rounded-[10px] w-[152px] h-[52px] hover:bg-[#c6f0ff]">
+                <button className="explore-button bg-white text-[#023E53] text-lg px-6 py-3 rounded-[10px] w-[152px] h-[52px] hover:bg-[#c6f0ff]" onClick={handleJobClick}>
                 Explore Now
                 </button>
             </div>
@@ -160,7 +140,7 @@ function Homepage() {
      </section>
 
       {/* Footer Section */}
-      <footer className="bg-gray-100 px-44 py-16">
+      <footer ref={footerRef} className="bg-gray-100 px-44 py-16">
         <div className="flex justify-between">
           <div>
             <h1 className="text-2xl font-semibold">MuYMuY</h1>
