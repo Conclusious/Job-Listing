@@ -90,16 +90,27 @@ const Search = () => {
       {/* Content Section */}
       <div className="flex px-8 py-6 gap-6 max-w-[1400px] mx-auto">
         <div className="w-1/2 space-y-4">
-          {filteredJobs.map((job) => (
-            <JobCard
-              key={job._id}
-              job={job}
-              onClick={() => handleJobClick(job)}
-              isSelected={selectedJob?._id === job._id}
-            />
-          ))}
+          {filteredJobs.length > 0 ? (
+            filteredJobs.map((job) => (
+              <JobCard
+                key={job._id}
+                job={job}
+                onClick={() => handleJobClick(job)}
+                isSelected={selectedJob?._id === job._id}
+              />
+            ))
+          ) : (
+            <div className="min-h-[calc(100vh-200px)] flex items-center justify-center">
+            <div className="flex flex-col items-center justify-center p-8 bg-white rounded-lg shadow w-full max-w-[600px]">
+              <h3 className="text-xl font-semibold text-gray-700">No Results Found</h3>
+              <p className="text-gray-500 text-center mt-2">
+                We couldn't find any jobs matching your search criteria
+              </p>
+            </div>
+          </div>
+          )}
         </div>
-        <div className="w-1/2 sticky top-[120px] overflow-auto">
+        <div className="w-1/2 sticky top-[120px]">
           {selectedJob && <JobDetails job={selectedJob} />}
         </div>
       </div>

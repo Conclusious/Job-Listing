@@ -13,6 +13,10 @@ function Homepage() {
     setLogin(loggedIn);
   },[]);
 
+  const handlePopularSearch = (searchTerm) => {
+    navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
+  };
+
   const goToLogin = () => {
     navigate('/login');
   };
@@ -120,6 +124,16 @@ function Homepage() {
               Search
             </button>
           </form>
+        </div>
+        <div className="popular-search mt-5">
+                    <h4 className="text-[#8BCDE4] text-[24px] font-normal mb-2.5">Popular Searches</h4>
+                    <div className="ButSearch flex flex-wrap gap-[11px] mt-5 max-w-[900px] w-full">
+                        {["Work From Home", "Part Time", "Customer Service", "Engineering", "IT", "Data Analyst", "Digital Marketing", "Software Engineer", "Doctor", "English Teacher"].map((search, index) => (
+                            <button key={index} className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200" onClick={() => handlePopularSearch(search)}>
+                                {search}
+                            </button>
+                        ))}
+                    </div>
         </div>
       </section>
 
