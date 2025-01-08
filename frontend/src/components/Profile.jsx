@@ -28,27 +28,40 @@ function Profile() {
         navigate('/');
     };
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
+        }
+    };
+
     return (
         <>
             <div className='bg-[#023E53] h-screen'>
                 {/* Header Container */}
                 <div className='flex justify-center items-center bg-white h-[100px]'>
-                    <h1 className='absolute mr-[1000px] text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer' onClick={goToHome}>MuYMuY</h1>
-                    <div className='flex w-[520px]'>
-                        <input
-                            placeholder="Search the job title or companies"
-                            className="w-[450px] h-[35px] shadow-inner border-[3px] border-r-0 rounded-l-[5px] indent-2"
-                        ></input>
-                        <button
-                            type="button"
-                            className='place-items-center w-[75px] h-[35px] shadow-inner border-[3px] rounded-r-[5px]'
-                        ><img
-                                id='search'
-                                className='w-[24px] h-[24px]'
-                                src="/images/search-profile.png"
-                                alt="Search" />
-                        </button>
-                    </div>
+                    <h1 className='absolute mr-[1000px] text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer hover:text-blue-600 transition-colors' onClick={goToHome}>MuYMuY</h1>
+                        <form onSubmit={handleSearchSubmit}
+                            className='flex w-[520px]'>
+                            <input
+                                type="text"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Search the job title or companies"
+                                className="w-[450px] h-[35px] shadow-inner border-[3px] border-r-0 rounded-l-[5px] indent-2"
+                            ></input>
+                            <button
+                                type="submit"
+                                className='place-items-center w-[75px] h-[35px] shadow-inner border-[3px] rounded-r-[5px]'
+                            ><img
+                                    id='search'
+                                    className='w-[24px] h-[24px]'
+                                    src="/images/search-profile.png"
+                                    alt="Search" />
+                            </button>
+                        </form>
                     <button
                         onClick={goToPost}
                         className='absolute ml-[790px] w-[100px] h-[35px] rounded-[5px] text-[20px] text-white bg-[#023E53] hover:bg-blue-800'>

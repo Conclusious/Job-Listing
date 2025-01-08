@@ -3,15 +3,22 @@ import { useNavigate } from 'react-router-dom';
 
 function Homepage() {
   const navigate = useNavigate();
-  const [Login,setLogin]=useState(false)
+  const [Login, setLogin] = useState(false);
   const footerRef = useRef(null);
+  const aboutUsRef = useRef(null);
+
+  const scrolltoAbout = () => {
+    aboutUsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const scrollToFooter = () => {
     footerRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-  useEffect(()=>{
-    const loggedIn = localStorage.getItem('Login')=='true';
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem('Login') === 'true';
     setLogin(loggedIn);
-  },[]);
+  }, []);
 
   const handlePopularSearch = (searchTerm) => {
     navigate(`/search?query=${encodeURIComponent(searchTerm)}`);
@@ -22,7 +29,7 @@ function Homepage() {
   };
 
   const goToRegister = () => {
-    navigate('/login#register'); 
+    navigate('/login#register');
   };
 
   const handleJobClick = () => {
@@ -30,8 +37,9 @@ function Homepage() {
   };
 
   const goToAccount = () => {
-    navigate('/Profile'); 
+    navigate('/Profile');
   };
+
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearchSubmit = (e) => {
@@ -40,12 +48,12 @@ function Homepage() {
       navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
     }
   };
-  
+
   return (
     <div id="Homepage" className="flex flex-col">
       {/* Header Section */}
       <header className="flex justify-between items-center bg-white h-20 px-8">
-        <h2 className="text-3xl text-blue-800 font-semibold">MuYMuY</h2>
+        <h2 className="text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer hover:text-blue-600 transition-colors">MuYMuY</h2>
         <div className="flex gap-5">
           {Login ? (
             <img
@@ -76,21 +84,16 @@ function Homepage() {
       {/* Navigation Section */}
       <nav className="flex justify-between items-center bg-gray-200 h-16 px-8 text-lg">
         <div className="flex gap-10">
-          <nav className="hover:underline cursor-pointer">Home</nav>
           <nav className="hover:underline cursor-pointer" onClick={handleJobClick}>Job</nav>
-          <nav className="hover:underline cursor-pointer" onClick={scrollToFooter}>About Us</nav>
+          <nav className="hover:underline cursor-pointer" onClick={scrolltoAbout}>About Us</nav>
           <nav className="hover:underline cursor-pointer" onClick={scrollToFooter}>Contact Us</nav>
         </div>
-        <button className="flex items-center text-lg">
-          ENG
-          <img className="w-5 ml-2" src="/images/down.png" alt="Dropdown Icon" />
-        </button>
       </nav>
 
       {/* Learn More Section */}
-      <div className="flex justify-center items-center gap-2 bg-[#8BCDE4] text-lg h-16 font-manrope cursor-pointer">
+      <div className="flex justify-center items-center gap-2 bg-[#8BCDE4] text-lg h-16 font-manrope">
         <p>Career Builder & MuYMuY are combining!</p>
-        <nav className="relative text-black no-underline hover:underline">Learn More</nav>
+        <nav className="relative text-black no-underline hover:underline cursor-pointer" onClick={scrolltoAbout}>About Us</nav>
         <img className="ml-2" src="/images/right-arrow.png" alt="Arrow Icon" />
       </div>
 
@@ -126,47 +129,60 @@ function Homepage() {
           </form>
         </div>
         <div className="popular-search mt-5">
-                    <h4 className="text-[#8BCDE4] text-[24px] font-normal mb-2.5">Popular Searches</h4>
-                    <div className="ButSearch flex flex-wrap gap-[11px] mt-5 max-w-[900px] w-full">
-                        {["Work From Home", "Part Time", "Customer Service", "Engineering", "IT", "Data Analyst", "Digital Marketing", "Software Engineer", "Doctor", "English Teacher"].map((search, index) => (
-                            <button key={index} className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200" onClick={() => handlePopularSearch(search)}>
-                                {search}
-                            </button>
-                        ))}
-                    </div>
+          <h4 className="text-[#8BCDE4] text-[24px] font-normal mb-2.5">Popular Searches</h4>
+          <div className="ButSearch flex flex-wrap gap-[11px] mt-5 max-w-[900px] w-full">
+            {[
+              "Work From Home", "Part Time", "Customer Service", "Engineering", "IT",
+              "Data Analyst", "Digital Marketing", "Software Engineer", "Doctor", "English Teacher"
+            ].map((search, index) => (
+              <button key={index} className="bg-white text-black px-4 py-2 rounded-full hover:bg-gray-200" onClick={() => handlePopularSearch(search)}>
+                {search}
+              </button>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Extra Content Section */}
       <section className="extra-content bg-[#023E53] h-[529px] px-5 flex flex-row items-center justify-around">
-            <div className="left max-w-[495px] text-white text-left">
-                <h2 className="text-4xl mb-2.5">Sign In to get job alert</h2>
-                <p className="text-xl leading-6 mb-5 max-w-[493px]">
-                Our powerful matching technology will send job matches right to your inbox.
-                </p>
-                <button className="explore-button bg-white text-[#023E53] text-lg px-6 py-3 rounded-[10px] w-[152px] h-[52px] hover:bg-[#c6f0ff]" onClick={handleJobClick}>
-                Explore Now
-                </button>
-            </div>
-            <div>
-                <img src="/images/image 15.png" alt="Extra Content Image" className="rounded-[20px] max-w-[492px]" />
-            </div>
-     </section>
+        <div className="left max-w-[495px] text-white text-left">
+          <h2 className="text-4xl mb-2.5">Sign In to get job alert</h2>
+          <p className="text-xl leading-6 mb-5 max-w-[493px]">
+            Our powerful matching technology will send job matches right to your inbox.
+          </p>
+          <button className="explore-button bg-white text-[#023E53] text-lg px-6 py-3 rounded-[10px] w-[152px] h-[52px] hover:bg-[#c6f0ff]" onClick={handleJobClick}>
+            Explore Now
+          </button>
+        </div>
+        <div>
+          <img src="/images/image 15.png" alt="Extra Content Image" className="rounded-[20px] max-w-[492px]" />
+        </div>
+      </section>
+
+   {/* About Us Section */}
+      <section ref={aboutUsRef} className="about-us bg-[#8BCDE4] py-16 px-10">
+        <h2 className="text-4xl text-wh text-center font-semibold mb-6">About Us</h2>
+        <p className="text-lg text-center max-w-[800px] mx-auto leading-7">
+          At MuYMuY, we aim to bridge the gap between job seekers and employers by offering a seamless job-matching service.
+          Our platform is tailored to provide users with personalized job recommendations based on their skills, preferences, and career aspirations.
+          Join us on our journey to transform the job search experience and create meaningful connections.
+        </p>
+      </section>
 
       {/* Footer Section */}
       <footer ref={footerRef} className="bg-gray-100 px-44 py-16">
         <div className="flex justify-between">
-          <div>
+          <div className='w-[50%]'>
             <h1 className="text-2xl font-semibold">MuYMuY</h1>
             <p>MuYMuY is Cambodia's #1 Job Matching Service</p>
             <p>Find us on social media:</p>
-            <div className="flex gap-4">
-              <img src="/images/facebook.png" alt="Facebook Icon" className="w-6" />
-              <img src="/images/github.png" alt="GitHub Icon" className="w-6" />
-              <img src="/images/search.png" alt="Search Icon" className="w-6" />
+            <div className="flex gap-5 mt-5">
+              <img src="/images/facebook.png" alt="Facebook Icon" className="w-10 cursor-pointer" />
+              <img src="/images/github.png" alt="GitHub Icon" className="w-10 cursor-pointer" />
+              <img src="/images/search.png" alt="Search Icon" className="w-10 cursor-pointer" />
             </div>
           </div>
-          <div>
+          <div className='w-[50%]'>
             <h4 className="text-xl font-semibold">Our Contact</h4>
             <p>#12, Street 2001, Phum Paprak Khang Tboung, Sangkat Kakab, Khan Porsenchey, Phnom Penh, Cambodia</p>
             <p>Tel: 855 9999999</p>
@@ -176,9 +192,9 @@ function Homepage() {
           </div>
         </div>
       </footer>
-        <div className="credit h-[55px] bg-black text-white text-center">
-            <p>All rights reserved &#xA9; 2024 MuYMuY.</p>
-        </div>
+      <div className="credit h-[50px] place-content-center bg-black text-white text-center">
+        <p>All rights reserved &#xA9; 2024 MuYMuY.</p>
+      </div>
     </div>
   );
 }

@@ -47,7 +47,7 @@ function JobPost() {
             const data = await response.json();
 
             if (response.ok) {
-                alert('Job posted successfully!');
+                navigate("/");
             } else {
                 alert(`Error: ${data.message || 'Unknown error occurred'}`);
             }
@@ -57,13 +57,11 @@ function JobPost() {
         }
     };
 
-
-
     return (
         <>
             {/* Header Container */}
             <div className='flex justify-center items-center bg-white h-[100px]'>
-                <h1 className='absolute mr-[1000px] text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer'
+                <h1 className='absolute mr-[1000px] text-blue-800 font-merriweather-sans font-bold text-[30px] hover:cursor-pointer hover:text-blue-600 transition-colors'
                     onClick={gotoHome}>
                     MuYMuY</h1>
                 <div className='flex w-[520px]'>

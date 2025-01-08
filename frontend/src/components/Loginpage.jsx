@@ -49,7 +49,6 @@ function Login() {
         localStorage.setItem('iduser', iduser);
         localStorage.setItem('firstname',firstname);
         localStorage.setItem('lastname',lastname);
-        alert('Registration successful!');
         navigate('/');
       } else {
         alert(`Error: ${data.message || 'Unknown error occurred'}`);
@@ -82,7 +81,6 @@ function Login() {
         localStorage.setItem('iduser', data.iduser);
         localStorage.setItem('firstname',data.firstname);
         localStorage.setItem('lastname',data.lastname);
-        alert('Login successful!');
         navigate('/');
       } else {
         alert(`Error: ${data.message || 'Invalid username or password'}`);
